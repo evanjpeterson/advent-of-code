@@ -9,13 +9,13 @@ bun install
 To run:
 
 ```bash
-bun run days/##
+bun run days/##/part#
 ```
 
 e.g.
 
 ```bash
-bun run days/01
+bun run days/02/part2
 ```
 
 This project was created using `bun init` in bun v1.3.4. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.

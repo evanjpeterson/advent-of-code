@@ -10,6 +10,6 @@ export const log = console.log
 
 export const getInput = async () => {
   const input = await Bun.stdin.text()
-  const lines = input.split("\n")
+  const lines = input.split("\n").filter(Boolean)
   return lines
 }

@@ -1,8 +1,8 @@
 import { debug, log, getInput } from "@/common/index.ts"
 
 /**
- * Advent of Code 2025 Day 1
- * https://adventofcode.com/2025/day/1
+ * Advent of Code 2025 Day 1 Part 2
+ * https://adventofcode.com/2025/day/1#part2
  */
 
 // Too low: 6835
