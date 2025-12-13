@@ -2,9 +2,13 @@ import assert from "assert"
 import { debug, getInput, log } from "@/common"
 
 /**
- * Advent of Code 2025 Day 2 Part 2
+ * Advent of Code 2025 Day 2 Part 2 (tryhard)
  * https://adventofcode.com/2025/day/2#part2
  */
+
+// This is a cop-out, but I want to move on to the recursive approach so I can compare performance
+// and then move on to other challenges after that.
+const seen = new Set()
 
 const possibleSequenceLengths = (numDigits: number) =>
   // Find factors of |numDigits| (which lengths divide evenly into it?)
@@ -43,10 +47,11 @@ const sumInvalidIdsOfSequenceLength = (
   let maxSeq = seq * 10
   let id = repeatSequence(seq, seqLen, repeats)
 
-  while (seq < maxSeq && id < hi) {
-    if (id >= lo && id <= hi) {
+  while (seq < maxSeq && id <= hi) {
+    if (id >= lo && id <= hi && !seen.has(id)) {
       // The sequence is in-bounds, so it is an 'invalid' ID (within the valid range :)
       sum += id
+      seen.add(id)
       debug(`   Found: ${id}`)
     }
     seq += 1
@@ -73,6 +78,7 @@ const sumInvalidIdsInRange = (loStr: string, hiStr: string) => {
     possibleSequenceLengths(numDigits).forEach((seqLen) => {
       sum += sumInvalidIdsOfSequenceLength(seqLen, numDigits / seqLen, lo, hi)
     })
+    seen.clear()
   }
 
   // Return the sum of invalid IDs found in this range, for all possible numbers of digits.
