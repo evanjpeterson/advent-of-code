@@ -13,3 +13,5 @@ export const getInput = async () => {
   const lines = input.split("\n").filter(Boolean)
   return lines
 }
+
+export const parseNumber = (s: string) => parseInt(s, 10)
