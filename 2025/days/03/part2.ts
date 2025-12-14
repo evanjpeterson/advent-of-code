@@ -6,11 +6,9 @@ import { debug, getInput, log, parseNumber } from "@/common"
  */
 
 // High:  168893382458726
-// Goldy:
+// Goldy: 168627047606506
 // Low:   168591803351227
 //        168587346947226
-//        168587356647226
-//        168591803351227
 
 const NUM_TO_SELECT = 12
 
@@ -31,12 +29,28 @@ const sortOption = (jolts: number, options: number[]) => {
   }
 }
 
-const removeLowest = (options: number[], from: number) => {
-  // Remove the lowest value at the earliest position from the list, but after the |from| index.
+const numsToBase10 = (nums: number[]) => {
+  return nums.reduce((acc, num) => acc * 10 + num, 0)
+}
+
+const removeWeakest = (options: number[], from: number) => {
+  // Remove the 'weakest' value from the list, but after the |from| index.
+  // The 'weakest' value is the one that leads to the biggest result when it is removed.
   const target = options.slice(from)
-  const index = target.indexOf(Math.min(...target))
-  const removed = options.splice(from + index, 1)
-  return { removed: removed[0], at: from + index }
+
+  let weakestIndex = 0
+  let max
+  for (let i = 0; i < target.length; i++) {
+    const val = numsToBase10([...target.slice(0, i), ...target.slice(i + 1)])
+    if (!max || val > max) {
+      max = val
+      weakestIndex = i
+    }
+  }
+
+  const removed = options.splice(from + weakestIndex, 1)
+
+  return { removed: removed[0], at: from + weakestIndex }
 }
 
 // Join the NUM_TO_SELECT highest numbers in a row of numbers: 818181911112111
@@ -65,16 +79,12 @@ const maxJoltage = (bank: number[]) => {
     if (bestOptions.length) {
       const option = bestOptions.shift()!
       if (option >= selected[i]!) {
-        //debug(selected.join(""))
         // Trade for an option if it has a higher value or a lower position
         // (all |bestOptions| have lower positions than the default selection, so focus on the value).
-        removeLowest(selected, i)
+        removeWeakest(selected, i)
         selected.splice(i, 0, option)
-        //debug(selected.join("") + ` removed ${removed} at pos ${at}`)
-        //debug("***")
       } else {
         // Default selection is better than remaining options, which no longer need to be considered.
-        //debug(`Keeping ${selected[i]}. Done.`)
         bestOptions.length = 0
       }
     }
