@@ -8,10 +8,14 @@ export const debug = (...args: any[]) => {
 
 export const log = console.log
 
-export const getInput = async () => {
+export const getInput = async ({
+  keepEmpty,
+}: {
+  keepEmpty?: true
+} = {}) => {
   const input = await Bun.stdin.text()
-  const lines = input.split("\n").filter(Boolean)
-  return lines
+  const lines = input.split("\n")
+  return keepEmpty ? lines : lines.filter(Boolean)
 }
 
 export const parseNumber = (s: string) => parseInt(s, 10)
