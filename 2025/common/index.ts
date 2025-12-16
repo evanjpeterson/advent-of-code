@@ -20,6 +20,9 @@ export const getInput = async ({
 
 export const parseNumber = (s: string) => parseInt(s, 10)
 
+export const times = <T>(n: number, func: () => T): T[] =>
+  Array.from({ length: n }).map(func)
+
 export const count = <T>(
   iter: T[],
   cond: (item: T, index: number) => boolean,
