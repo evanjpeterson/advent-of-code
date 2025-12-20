@@ -8,6 +8,9 @@ export const debug = (...args: any[]) => {
 
 export const log = console.log
 
+export const binstr = (num: number, padAmt: number = 16) =>
+  num.toString(2).padStart(padAmt, "0")
+
 export const getInput = async ({
   keepEmpty,
 }: {
